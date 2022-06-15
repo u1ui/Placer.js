@@ -3,14 +3,15 @@
 export class Placer {
     constructor(el, options={}){
         this.el = el;
-        this.options = Object.assign({
+        this.followingAdjust = this.followingAdjust.bind(this);
+
+        this.options = { // default
             y: 'after',
             x: 'prepend',
-            //margin: 0,
             stayInWindow: true,
             switchSide: true,
-        },options);
-        this.followingAdjust = this.followingAdjust.bind(this);
+        };
+        this.setOptions(options);
     }
     setOptions(options){
         Object.assign(this.options, options);
@@ -18,42 +19,32 @@ export class Placer {
     }
     toElement(el) {
         this.unfollow();
-        this._toElement(el)
+        this._toElement(el);
     }
     _toElement(el) {
         let rect = el.getBoundingClientRect();
         this.toClientRect(rect);
     }
     toClientRect(rect){
-        /* margin can be done with css? would be better so we can use differen units *
+        /* margin can be done with css? would be better so we can use differen units */
         if (this.options.margin) {
-            let margin = this.options.margin;
-            if (margin.top === void 0) {
-                margin = {
-                    top: margin,
-                    left: margin,
-                    bottom: margin,
-                    right: margin,
-                };
-            }
+            let margin = this.options.margin
             rect = {
-                top:    rect.top    - margin.top,
-                bottom: rect.bottom + margin.bottom,
-                left:   rect.left   - margin.left,
-                right:  rect.right  + margin.right,
-                height: rect.height + margin.top  + margin.bottom,
-                width:  rect.width  + margin.left + margin.right,
+                top:    rect.top    - margin,
+                bottom: rect.bottom + margin,
+                left:   rect.left   - margin,
+                right:  rect.right  + margin,
+                height: rect.height + margin*2,
+                width:  rect.width  + margin*2,
             };
         }
-        */
         let viewport = { // viewport relative to the layer
             top: 0,
             left: 0,
         };
-        // css-position
+
         let position = getComputedStyle(this.el).getPropertyValue('position');
         if (position !== 'fixed') {
-            //if (position !== 'absolute') this.el.style.position = 'absolute';
             let root = offsetParent(this.el);
             if (root) {
                 // if (!root) root = doc.documentElement; // make no sense
@@ -69,8 +60,8 @@ export class Placer {
             }
         }
         // start
-        var placeY = this.options.y;
-        var placeX = this.options.x;
+        let placeY = this.options.y;
+        let placeX = this.options.x;
 
         var innerWidth  = doc.documentElement.clientWidth;
         var innerHeight = doc.documentElement.clientHeight;
@@ -93,10 +84,9 @@ export class Placer {
         if (this.options.switchSide && y + layerHeight + viewport.top > innerHeight) placeY = placeY === 'prepend' ? 'append' : 'before';
         if (placeY==='before')  y = rect.top    - layerHeight;
         if (placeY==='append')  y = rect.bottom - layerHeight;
-        if (y < -viewport.top) y = placeY === 'before' ? rect.bottom : rect.top;
+        if (y < -viewport.top)  y = placeY === 'before' ? rect.bottom : rect.top;
         if (placeY==='center')  y = rect.top + rect.height/2 - layerHeight/2;
 
-        // move follower to stay in window
         if (this.options.stayInWindow) {
             x = clamp(x, -viewport.left, innerWidth  - viewport.left - layerWidth);
             y = clamp(y, -viewport.top,  innerHeight - viewport.top  - layerHeight);
@@ -107,19 +97,18 @@ export class Placer {
             y += scrollY;
         }
 
-        // if (this.options.use === 'transform') {
-        //     this.el.style.transform  = 'translate('+x+'px,'+y+'px)';
-        // } else {
+        requestAnimationFrame(()=>{
             this.el.style.top  = y + 'px';
             this.el.style.left = x + 'px';
-        // }
+        });
+
+        this.positionX = placeX;
+        this.positionY = placeY;
     }
 
     // follow:
     followElement(el){
         if (this.following === el) return;
-        //let position = getComputedStyle(this.el).getPropertyValue('position');
-        //if (position !== 'fixed') console.warn('use fixed!')
         this.following = el;
         if (!el) return;
         clearInterval(this.followInterval);
@@ -142,37 +131,20 @@ export class Placer {
     }
     followingAdjust(){
         const run = this.following && this.el.parentNode && this.following.parentNode && this.el.offsetWidth && this.following.offsetWidth;
-        if (!run) {
-            this.unfollow();
-        } else {
-            this._toElement(this.following);
-        }
+        run ? this._toElement(this.following) : this.unfollow();
     }
 };
 
-const doc = document;
-/*
+
 const offsetParent = (el) => {
     var parent = el.offsetParent;
     if (parent === doc.body) {
         let position = getComputedStyle(parent).getPropertyValue('position');
-        if (position === 'static') {
-            parent = null;
-        }
+        if (position === 'static') parent = null;
     }
     return parent;
 }
-*/
-function offsetParent(el){
-    var parent = el.offsetParent;
-    if (parent === doc.body) {
-        let position = getComputedStyle(parent).getPropertyValue('position');
-        if (position === 'static') {
-            parent = null;
-        }
-    }
-    return parent;
-}
-
 
 const clamp=(value, min, max) => value < min ? min : value > max ? max : value;
+
+const doc = document;
