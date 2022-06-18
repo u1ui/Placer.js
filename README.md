@@ -21,3 +21,8 @@ placer.toClientRect(rect);
 ```
 
 
+
+## Demos
+https://raw.githack.com/u1ui/Placer.js/main/tests/minimal.html  
+https://raw.githack.com/u1ui/Placer.js/main/tests/test.html  
+
