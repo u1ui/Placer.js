@@ -1,14 +1,20 @@
 # Placer.js
-Placer.js
+Absolute place elements relative to others
 
 ## Ussage
 
-```html
-<div id=moverEl style="position:absolute">move to</div>
-<button id=target>
-    move to me
-</button>
+```js
+let placer = new Placer(moverEl, {
+  x:'after',
+  y:'after',
+  margin: 0,
+  stayInWindow: true,
+  switchSide: true,
+});
+
+placer.toElement(target);
 ```
+[doc](https://doc.deno.land/https://cdn.jsdelivr.net/gh/u1ui/Placer.js@1.0.0/Placer.js)
 
 ## Install
 

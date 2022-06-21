@@ -21,10 +21,19 @@ export class Placer {
         this.unfollow();
         this._toElement(el);
     }
+
+    /**
+     * @private
+     */
     _toElement(el) {
         let rect = el.getBoundingClientRect();
         this.toClientRect(rect);
     }
+
+    /**
+     * @private
+     * @param {ClientRect} rect
+     */
     toClientRect(rect){
         /* margin can be done with css? would be better so we can use differen units */
         if (this.options.margin) {
@@ -129,6 +138,10 @@ export class Placer {
         doc.removeEventListener('input',this.followingAdjust,{passive:true, capture:true});
         doc.removeEventListener('scroll',this.followingAdjust,{passive:true, capture:true});
     }
+
+    /**
+     * @private
+     */
     followingAdjust(){
         const run = this.following && this.el.parentNode && this.following.parentNode && this.el.offsetWidth && this.following.offsetWidth;
         run ? this._toElement(this.following) : this.unfollow();
