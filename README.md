@@ -1,4 +1,4 @@
-# undefined
+# Placer.js
 Placer.js
 
 ## Ussage
@@ -10,21 +10,16 @@ Placer.js
 </button>
 ```
 
-## Demos
-
-https://raw.githack.com/u1ui/Placer.js/main/tests/minimal.html  
-https://raw.githack.com/u1ui/Placer.js/main/tests/test.html
-
 ## Install
 
-```html
-<script src="https://cdn.jsdelivr.net/gh/u1ui/Placer.js@1.0.0/Placer.min.js" type=module>
+```js
+import {Placer} from "https://cdn.jsdelivr.net/gh/u1ui/Placer.js@1.0.0/Placer.min.js"
 ```
 
-## Demo
+## Demos
 
-https://raw.githack.com/u1ui/Placer.js/main/tests/minimal.html  
-https://raw.githack.com/u1ui/Placer.js/main/tests/test.html  
+[minimal.html](https://raw.githack.com/u1ui/Placer.js/main/tests/minimal.html)  
+[test.html](https://raw.githack.com/u1ui/Placer.js/main/tests/test.html)  
 
 ## About
 
