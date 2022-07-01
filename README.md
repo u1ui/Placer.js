@@ -14,6 +14,14 @@ let placer = new Placer(moverEl, {
 
 placer.toElement(target);
 ```
+
+```html
+<div id=moverEl style="position:absolute">move to</div>
+<button id=target>
+    move to me
+</button>
+```
+
 [doc](https://doc.deno.land/https://cdn.jsdelivr.net/gh/u1ui/Placer.js@1.0.0/Placer.js)
 
 ## Install
@@ -24,8 +32,8 @@ import {Placer} from "https://cdn.jsdelivr.net/gh/u1ui/Placer.js@1.0.0/Placer.mi
 
 ## Demos
 
-[minimal.html](https://raw.githack.com/u1ui/Placer.js/main/tests/minimal.html)  
-[test.html](https://raw.githack.com/u1ui/Placer.js/main/tests/test.html)  
+[minimal.html](http://gcdn.li/u1ui/Placer.js@main/tests/minimal.html)  
+[test.html](http://gcdn.li/u1ui/Placer.js@main/tests/test.html)  
 
 ## About
 
