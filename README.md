@@ -22,12 +22,12 @@ placer.toElement(target);
 </button>
 ```
 
-[doc](https://doc.deno.land/https://cdn.jsdelivr.net/gh/u1ui/Placer.js@1.0.0/Placer.js)
+[doc](https://doc.deno.land/https://cdn.jsdelivr.net/gh/u1ui/Placer.js@$main/Placer.js)
 
 ## Install
 
 ```js
-import {Placer} from "https://cdn.jsdelivr.net/gh/u1ui/Placer.js@1.0.0/Placer.min.js"
+import {Placer} from "https://cdn.jsdelivr.net/gh/u1ui/Placer.js@x.x.x/Placer.min.js"
 ```
 
 ## Demos
