@@ -24,7 +24,6 @@ placer.toElement(target);
 
 [doc](https://doc.deno.land/https://cdn.jsdelivr.net/gh/u1ui/Placer.js@$main/Placer.js)
 
-
 ## API
 
 ### Placer
@@ -45,7 +44,6 @@ placer.followElement(element); // place moverEl relative to element and follow i
 
 ```
 
-
 ## Install
 
 ```js
@@ -61,3 +59,4 @@ import {Placer} from "https://cdn.jsdelivr.net/gh/u1ui/Placer.js@x.x.x/Placer.mi
 
 - MIT License, Copyright (c) 2022 <u1> (like all repositories in this organization) <br>
 - Suggestions, ideas, finding bugs and making pull requests make us very happy. ♥
+
