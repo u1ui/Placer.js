@@ -22,7 +22,7 @@ placer.toElement(target);
 </button>
 ```
 
-[doc](https://doc.deno.land/https://cdn.jsdelivr.net/gh/u1ui/Placer.js@$main/Placer.js)
+[doc](https://doc.deno.land/https://cdn.jsdelivr.net/gh/u1ui/Placer.js@x/Placer.js)
 
 ## API
 
