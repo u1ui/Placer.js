@@ -47,7 +47,7 @@ placer.followElement(element); // place moverEl relative to element and follow i
 ## Install
 
 ```js
-import {Placer} from "https://cdn.jsdelivr.net/gh/u1ui/Placer.js@x.x.x/Placer.min.js"
+import * as module from "https://cdn.jsdelivr.net/gh/u1ui/Placer.js@x.x.x/Placer.min.js"
 ```
 
 ## Demos
