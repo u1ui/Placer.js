@@ -1,9 +1,7 @@
-/* Copyright (c) 2016 Tobias Buschor https://goo.gl/gl0mbf | MIT License https://goo.gl/HgajeK */
-
 export class Placer {
     constructor(el, options={}){
         this.el = el;
-        this.followingAdjust = this.followingAdjust.bind(this);
+        this._followingAdjust = this._followingAdjust.bind(this);
 
         this.options = { // default
             y: 'after',
@@ -15,7 +13,7 @@ export class Placer {
     }
     setOptions(options){
         Object.assign(this.options, options);
-        this.followingAdjust();
+        this._followingAdjust();
     }
     toElement(el) {
         this.unfollow();
@@ -26,18 +24,18 @@ export class Placer {
      * @private
      */
     _toElement(el) {
-        let rect = el.getBoundingClientRect();
+        const rect = el.getBoundingClientRect();
         this.toClientRect(rect);
     }
 
     /**
      * @private
-     * @param {ClientRect} rect
+     * @param {DomRect} rect
      */
     toClientRect(rect){
         /* margin can be done with css? would be better so we can use differen units */
         if (this.options.margin) {
-            let margin = this.options.margin
+            const margin = this.options.margin
             rect = {
                 top:    rect.top    - margin,
                 bottom: rect.bottom + margin,
@@ -56,7 +54,7 @@ export class Placer {
         if (position !== 'fixed') {
             let root = offsetParent(this.el);
             if (root) {
-                // if (!root) root = doc.documentElement; // make no sense
+                // if (!root) root = document.documentElement; // make no sense
                 viewport = root.getBoundingClientRect();
                 rect = {
                     top:    rect.top    - viewport.top,
@@ -72,11 +70,11 @@ export class Placer {
         let placeY = this.options.y;
         let placeX = this.options.x;
 
-        var innerWidth  = doc.documentElement.clientWidth;
-        var innerHeight = doc.documentElement.clientHeight;
+        const innerWidth  = document.documentElement.clientWidth;
+        const innerHeight = document.documentElement.clientHeight;
 
-        var layerWidth  = this.el.offsetWidth; // scrollWidth?
-        var layerHeight = this.el.offsetHeight;
+        const layerWidth  = this.el.offsetWidth;
+        const layerHeight = this.el.offsetHeight;
 
         let x = 0;
         if (placeX==='prepend') x = rect.left;
@@ -121,28 +119,25 @@ export class Placer {
         this.following = el;
         if (!el) return;
         clearInterval(this.followInterval);
-        this.followInterval = setInterval(this.followingAdjust,200);
-        addEventListener('resize',this.followingAdjust,{passive:true});
-        doc.addEventListener('mousemove',this.followingAdjust,{passive:true});
-        doc.addEventListener('mouseup',this.followingAdjust,{passive:true});
-        doc.addEventListener('input',this.followingAdjust,{passive:true, capture:true});
-        doc.addEventListener('scroll',this.followingAdjust,{passive:true, capture:true});
-        this.followingAdjust();
+        this.followInterval = setInterval(this._followingAdjust,200);
+        this._addAndRemoveListeners(true);
+        this._followingAdjust();
     }
     unfollow(){
         this.following = null;
         clearInterval(this.followInterval);
-        removeEventListener('resize',this.followingAdjust,{passive:true});
-        doc.removeEventListener('mousemove',this.followingAdjust,{passive:true});
-        doc.removeEventListener('mouseup',this.followingAdjust,{passive:true});
-        doc.removeEventListener('input',this.followingAdjust,{passive:true, capture:true});
-        doc.removeEventListener('scroll',this.followingAdjust,{passive:true, capture:true});
+        this._addAndRemoveListeners(false);
     }
 
-    /**
-     * @private
-     */
-    followingAdjust(){
+    _addAndRemoveListeners(add){
+        const method = add ? 'addEventListener' : 'removeEventListener';
+        window[method]('resize',this._followingAdjust,{passive:true});
+        document[method]('mousemove',this._followingAdjust,{passive:true});
+        document[method]('mouseup',this._followingAdjust,{passive:true});
+        document[method]('input',this._followingAdjust,{passive:true, capture:true});
+        document[method]('scroll',this._followingAdjust,{passive:true, capture:true});
+    }
+    _followingAdjust(){
         const run = this.following && this.el.parentNode && this.following.parentNode && this.el.offsetWidth && this.following.offsetWidth;
         run ? this._toElement(this.following) : this.unfollow();
     }
@@ -150,8 +145,8 @@ export class Placer {
 
 
 const offsetParent = (el) => {
-    var parent = el.offsetParent;
-    if (parent === doc.body) {
+    let parent = el.offsetParent;
+    if (parent === document.body) {
         let position = getComputedStyle(parent).getPropertyValue('position');
         if (position === 'static') parent = null;
     }
@@ -159,5 +154,3 @@ const offsetParent = (el) => {
 }
 
 const clamp=(value, min, max) => value < min ? min : value > max ? max : value;
-
-const doc = document;
