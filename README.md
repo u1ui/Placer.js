@@ -1,7 +1,7 @@
 # Placer.js
 Absolute place elements relative to others
 
-## Ussage
+## Usage
 
 ```js
 let placer = new Placer(moverEl, {
